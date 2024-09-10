@@ -35,4 +35,94 @@ Note I am in Rocky Linux 9.3 and it is in a VM virtual box
  - [symfony security documentation](https://symfony.com/doc/current/security.html#the-user)
  - [Installing & Setting up the Symfony Framework](https://symfony.com/doc/current/setup.html)
 
+## Steps for basic setup and CRUD (Very Rushed)
+1. Get Symfony first
+2. make a new project
+
+3.Log in to MariaDB as root: First, log in to MariaDB:
+sudo mysql -u root -p
+
+CREATE DATABASE symfony_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+GRANT ALL PRIVILEGES ON symfony_db.* TO 'a'@'localhost' IDENTIFIED BY '12345678';
+FLUSH PRIVILEGES;
+
+4. .env
+DATABASE_URL = "mysql://a:12345678@127.0.0.1:3306/symfony_db"
+
+5.php bin/console make:entity Product
+#[ORM\Column(length: 255, nullable: true)]
+   private ?string $name;
+public function setName(string $name): self
+   {
+       $this->name = $name;
+
+       return $this;
+   }
+
+
+   public function getDescription(): ?string
+   {
+       return $this->description;
+   }
+
+
+6.REPOSITRY LOCATION
+ ADD FUNCTIONS
+
+7. MIGRATE DATA BASEphp bin/console make:migration
+php bin/console doctrine:migrations:migrate
+
+8. implement controller actions
+symfony console make:controller ProductController
+
+9. ADD controller actions
+/**
+* @Route("/api/products", name="product_api")
+*/
+class ProductController extends AbstractController
+{
+     /**
+    * @Route("/{id}", name="show", methods={"GET"})
+    */
+   public function show(Product $product, SerializerInterface $serializer): Response
+   {
+       $data = $serializer->serialize($product, 'json');
+       return new Response($data, 200, ['Content-Type' => 'application/json']);
+   }
+}
+
+10.DEFINE API ROUTES
+controllers:
+   resource:
+       path: ../src/Controller/
+       namespace: App\Controller
+   type: attribute
+product_api_index:
+   path: /api/products
+   controller: 'App\Controller\ProductController::index'
+   methods: ['GET']
+
+
+product_api_show:
+   path: /api/products/{id}
+   controller: 'App\Controller\ProductController::show'
+   methods: ['GET']
+
+
+11.RUN SERVER
+12. USE POSTMAN TO TEST API
+Post http://localhost:8000/api/products
+ 
+content type - application/json
+BODY = Raw
+{
+    "name": "Samsung ZFold ",
+    "description": "This is a an android product",
+    "price": 200.50
+}
+
+
+## Security 
+COMING SOON
 
