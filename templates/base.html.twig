@@ -4,14 +4,24 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        <!-- Block for adding stylesheets -->
+        {% block stylesheets %}
+            <!-- Include your CSS file here -->
+            <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         {% endblock %}
     </head>
     <body>
+        <!-- Block for body content -->
         {% block body %}{% endblock %}
+
+        <!-- Block for adding JavaScript files -->
+        {% block javascripts %}
+            <!-- Include your JavaScript file here -->
+            <script src="{{ asset('js/script.js') }}"></script>
+
+            <!-- You can still include your importmap block -->
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
     </body>
 </html>

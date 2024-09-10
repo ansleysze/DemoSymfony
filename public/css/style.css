@@ -1,0 +1,56 @@
+h1 {
+    text-align: center;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Center the container for the labels and inputs */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align everything in the center */
+}
+
+.heading-bar {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; /* Make sure it spans the entire width */
+    height: 60px; /* Adjust height as needed */
+    z-index: 1000; /* Ensures it stays on top */
+}
+
+.heading-title {
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+}
+
+
+/* Style the labels and inputs */
+label, input {
+    width: 300px;
+    margin: 6px 0;
+    text-align: center; /* Center the label text */
+}
+
+/* Style the button */
+button {
+    margin-top: 20px;
+    width: 300px;
+}
+

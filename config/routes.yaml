@@ -1,5 +1,60 @@
 controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+   resource:
+       path: ../src/Controller/
+       namespace: App\Controller
+   type: attribute
+product_api_index:
+   path: /api/products
+   controller: 'App\Controller\ProductController::index'
+   methods: ['GET']
+
+
+product_api_show:
+   path: /api/products/{id}
+   controller: 'App\Controller\ProductController::show'
+   methods: ['GET']
+
+
+product_api_create:
+   path: /api/products
+   controller: 'App\Controller\ProductController::create'
+   methods: ['POST']
+
+
+product_api_update:
+   path: /api/products/{id}
+   controller: 'App\Controller\ProductController::update'
+   methods: ['PUT']
+
+
+product_api_delete:
+   path: /api/products/{id}
+   controller: 'App\Controller\ProductController::delete'
+   methods: ['DELETE']
+
+
+product_api_search_by_id:
+   path: /api/products/search/{id}
+   controller: 'App\Controller\ProductController::findById'
+   methods: ['GET']
+
+
+product_api_search_by_price:
+   path: /api/products/search/price/{price}
+   controller: 'App\Controller\ProductController::findByPrice'
+   methods: ['GET']
+
+
+product_api_search_by_description:
+   path: /api/products/search/description/{description}
+   controller: 'App\Controller\ProductController::findByDescription'
+   methods: ['GET']
+product_api_search_price_greater_than:
+   path: /api/products/search/price-greater-than/{price}
+   controller: 'App\Controller\ProductController::findByPriceGreaterThan'
+   methods: [ 'GET' ]
+
+# config/routes.yaml
+home:
+    path: /
+    controller: App\Controller\HomeController::index
