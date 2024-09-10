@@ -110,7 +110,7 @@ product_api_show:
    methods: ['GET']
 
 
-11.RUN SERVER
+11.RUN SERVER and try the functions
 12. USE POSTMAN TO TEST API
 Post http://localhost:8000/api/products
  
@@ -124,5 +124,5 @@ BODY = Raw
 
 
 ## Security 
-COMING SOON
+For security, this website does not allow non user to enter the homepage, so we need to register first in the database using localhost:8000/register then we login with localhost:8000/login. Once Logged in, you will be routed to the home page if you are verified and if not it will stil keep you at the login page.
 
