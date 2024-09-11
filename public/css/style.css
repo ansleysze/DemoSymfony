@@ -1,35 +1,26 @@
-h1 {
-    text-align: center;
-}
-
+/* General page styles */
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    background-color: #f0f0f0;
 }
 
-/* Center the container for the labels and inputs */
-.login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Align everything in the center */
-}
-
+/* Header styles */
 .heading-bar {
     background-color: #333;
     color: #fff;
     padding: 15px;
     display: flex;
-    justify-content: flex-start;
     align-items: center;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%; /* Make sure it spans the entire width */
-    height: 60px; /* Adjust height as needed */
-    z-index: 1000; /* Ensures it stays on top */
+    width: 100%;
+    height: 60px;
+    z-index: 1000;
 }
 
 .heading-title {
@@ -37,20 +28,45 @@ body {
     padding: 0;
     font-size: 24px;
     font-weight: bold;
-    color: #fff;
+}
+
+/* Logo styles */
+.logo {
+    width: 120px;
+    height: auto;
+    margin-right: 15px;
+}
+.logincontainer {
+    text-align: center;
+}
+/* Input group styling */
+.input-group {
+    margin: 20px; /* Add space between input fields */
+}
+
+/* Login container with baby blue background */
+form {
+    background-color: rgba(2, 251, 255, 0.669) !important; /* Baby blue color */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional subtle shadow */
 }
 
 
-/* Style the labels and inputs */
-label, input {
-    width: 300px;
-    margin: 6px 0;
-    text-align: center; /* Center the label text */
-}
-
-/* Style the button */
-button {
+/* Button styles */
+.btn-9 {
+    background-color: #405cf5 !important; /* Blue background */
+    border: none !important; /* Remove any border */
+    color: white !important; /* White text */
+    width: 100%; /* Ensure full-width button */
+    padding: 10px;
     margin-top: 20px;
-    width: 300px;
+    border-radius: 5px;
+    box-shadow: none; /* Remove any shadows */
+    cursor: pointer; /* Pointer on hover */
+    margin-bottom:  20px;
 }
 
+.btn-9:hover {
+    background-color: #354ac9 !important; /* Darker blue on hover */
+}
