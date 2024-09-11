@@ -9,7 +9,7 @@ I made this as a warm up for my work, a mini side project if you will.
 ## Features
 
 - **User authentication** (login, logout)
-- **CRUD operations**: Create, Read, Update, and Delete functionality for managing data entities.
+- **CRUD operations**: Create, Read, Update, and Delete functionality for managing data entities. (Products)
 - **Custom login page styling** (CSS)
 - **Routing** to different pages (login, home)
 - **Session and security management** using Symfony
@@ -126,3 +126,5 @@ BODY = Raw
 ## Security 
 For security, this website does not allow non user to enter the homepage, so we need to register first in the database using localhost:8000/register then we login with localhost:8000/login. Once Logged in, you will be routed to the home page if you are verified and if not it will stil keep you at the login page.
 
+## License
+This project is open-source and available under the MIT License.
