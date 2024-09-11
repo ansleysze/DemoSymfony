@@ -35,7 +35,7 @@ Note I am in Rocky Linux 9.3 and it is in a VM virtual box
  - [symfony security documentation](https://symfony.com/doc/current/security.html#the-user)
  - [Installing & Setting up the Symfony Framework](https://symfony.com/doc/current/setup.html)
 
-## Steps for basic setup and CRUD (Very Rushed)
+## Steps for basic setup and CRUD (Super Summary)
 1. Get Symfony first
 2. make a new project
 
@@ -47,10 +47,10 @@ CREATE DATABASE symfony_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 GRANT ALL PRIVILEGES ON symfony_db.* TO 'a'@'localhost' IDENTIFIED BY '12345678';
 FLUSH PRIVILEGES;
 
-4. .env
+4. .env config in the symfony directory
 DATABASE_URL = "mysql://a:12345678@127.0.0.1:3306/symfony_db"
 
-5.php bin/console make:entity Product
+5.php bin/console make:entity Product  (make the product and customize to your liking)
 #[ORM\Column(length: 255, nullable: true)]
    private ?string $name;
 public function setName(string $name): self
@@ -67,8 +67,8 @@ public function setName(string $name): self
    }
 
 
-6.REPOSITRY LOCATION
- ADD FUNCTIONS
+6.Check REPOSITORY LOCATION
+ POPULATE AND ADD FUNCTIONS
 
 7. MIGRATE DATA BASEphp bin/console make:migration
 php bin/console doctrine:migrations:migrate
@@ -92,7 +92,7 @@ class ProductController extends AbstractController
    }
 }
 
-10.DEFINE API ROUTES
+10.DEFINE API ROUTES in routes.yaml 
 controllers:
    resource:
        path: ../src/Controller/
