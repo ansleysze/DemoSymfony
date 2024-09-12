@@ -8,7 +8,12 @@
 {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
       <link  href="{{ asset('css/style.css') }}" rel="stylesheet"/>
+
+       <link rel="stylesheet" href="{{ asset('metronic/dist/css/style.bundle.css') }}">
+       <script src="{{ asset('metronic/dist/js/scripts.bundle.js') }}"></script>
 {% endblock %}
+
+
     </head>
     <body>
         <!-- Block for body content -->
