@@ -1,0 +1,33 @@
+{# templates/test.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Test Page{% endblock %}
+
+{% block body %}
+    <div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+        <h1 class="text-3xl font-bold text-center mb-8">User Sign Up</h1>
+
+        {{ form_start(form, { 'attr': {'class': 'space-y-6'} }) }}
+
+        <div class="flex flex-col space-y-4">
+            {{ form_label(form.email, null, {'label_attr': {'class': 'text-sm font-semibold text-gray-700'}}) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-500'}}) }}
+            {{ form_errors(form.email, {'attr': {'class': 'text-red-600 text-sm mt-1'}}) }}
+        </div>
+
+        <div class="flex flex-col space-y-4">
+            {{ form_label(form.password, null, {'label_attr': {'class': 'text-sm font-semibold text-gray-700'}}) }}
+            {{ form_widget(form.password, {'attr': {'class': 'form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-500'}}) }}
+            {{ form_errors(form.password, {'attr': {'class': 'text-red-600 text-sm mt-1'}}) }}
+        </div>
+
+        <div class="mt-6">
+            <button type="submit" class="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition ease-in-out">
+                Submit
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

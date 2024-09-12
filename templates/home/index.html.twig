@@ -1,10 +1,39 @@
-{# templates/home/index.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Home Page{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
 {% block body %}
-    <h1>{{ title }}</h1>
-    <p>Welcome to your Symfony application home page!</p>
+
+     <div class="container">
+        <!-- Top left content -->
+        <div class="top-left">
+            <h1>{{ title }}</h1>
+        </div>
+
+        <!-- Top right content -->
+        <div class="top-right">
+            Logged in as: {{ app.user.email }}
+        </div>
+
+        <!-- Centered paragraph -->
+        <div class="centered">
+            <p>Welcome to the Test Symfony application home page!</p>
+        </div>
+    </div>
+
+
+    {# import 'macros.html.twig' as macros #}
+
+{# Display the form with the macro (FOR A DEMO REMOVE the comments) #}
+    {#
+    <form action="/submit" method="post">
+        <p>{{ macros.input('Email', 'email', null, 'email', 30, 'Enter your email', 'email', 'form-control', true) }}</p>
+        <p>{{ macros.input('Password', 'password', null, 'password', 30, 'Enter your password', 'password', 'form-control', true) }}</p>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    #}
 {% endblock %}

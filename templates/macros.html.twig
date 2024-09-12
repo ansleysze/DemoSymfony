@@ -1,0 +1,20 @@
+
+{% import _self as fields %}
+
+{% macro input(label, name, value = null, type = 'text', size = 30, placeholder = null, id = null, class = null, required = false) %}
+  <label{% if id %} for="{{ id }}"{% endif %}>
+    {{ label }}
+    <input
+      type="{{ type }}"
+      name="{{ name }}"
+      {% if value %} value="{{ value }}"{% endif %}
+      size="{{ size }}"
+      {% if placeholder %} placeholder="{{ placeholder }}"{% endif %}
+      {% if id %} id="{{ id }}"{% endif %}
+      {% if class %} class="{{ class }}"{% endif %}
+      {% if required %} required{% endif %}
+    >
+  </label>
+{% endmacro %}
+
+

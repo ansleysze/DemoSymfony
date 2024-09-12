@@ -58,3 +58,7 @@ product_api_search_price_greater_than:
 home:
     path: /
     controller: App\Controller\HomeController::index
+
+test:
+    path: /test
+    controller: App\Controller\DefaultController::index
