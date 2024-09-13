@@ -1,9 +1,9 @@
 
 # DemoSynfomy
 
-"Demo Symfony Project - A sample Symfony web application demonstrating user authentication, CRUD operations, custom login styling, and basic routing."
+"Demo Symfony Project - A sample Symfony web application demonstrating user authentication, CRUD operations, custom login styling, basic routing, registration, with he addition of tailwind and metronic"
 
-I made this as a warm up for my work, a mini side project if you will.
+I made this as a warm up for my work assignment, a mini side project if you will.
 
 
 ## Features
@@ -11,7 +11,7 @@ I made this as a warm up for my work, a mini side project if you will.
 - **User authentication** (login, logout)
 - **CRUD operations**: Create, Read, Update, and Delete functionality for managing data entities. (Products)
 - **Custom login page styling** (CSS)
-- **Routing** to different pages (login, home)
+- **Routing** to different pages (login, home, registration)
 - **Session and security management** using Symfony
 
 
