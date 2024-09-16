@@ -1,33 +1,97 @@
 {# templates/test.html.twig #}
 
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Test Page{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+      body {
+        background-color: #2e8b57; /* Seagreen hex code */
+      }
+    </style>
+</head>
+<body>
 
-{% block title %}Test Page{% endblock %}
-
-{% block body %}
+    <header class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-lg font-bold">
+                <a href="/" class="text-white hover:text-gray-300">My Website</a>
+            </div>
+    
+            <nav>
+                <ul class="flex space-x-6">
+                    <li>
+                        <a href="/" class="hover:text-gray-300">Home</a>
+                    </li>
+                    <li>
+                        <a href="/products" class="hover:text-gray-300">Products</a>
+                    </li>
+                    <li>
+                        <a href="/about-us" class="hover:text-gray-300">About Us</a>
+                    </li>
+                    <li>
+                        <a href="/coming-soon" class="hover:text-gray-300">Coming Soon</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
     <div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+
+        <div class="mb-8 text-center">
+            <img src="{{ asset('images/Tailwind.png') }}" alt="Logo" class="mx-auto w-32 h-auto">
+        </div>
         <h1 class="text-3xl font-bold text-center mb-8">Tailwind DEMO Sign Up</h1>
+
 
         {{ form_start(form, { 'attr': {'class': 'space-y-6'} }) }}
 
         <div class="flex flex-col space-y-4">
             {{ form_label(form.email, null, {'label_attr': {'class': 'text-sm font-semibold text-gray-700'}}) }}
-            {{ form_widget(form.email, {'attr': {'class': 'form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-500'}}) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
             {{ form_errors(form.email, {'attr': {'class': 'text-red-600 text-sm mt-1'}}) }}
         </div>
 
         <div class="flex flex-col space-y-4">
             {{ form_label(form.password, null, {'label_attr': {'class': 'text-sm font-semibold text-gray-700'}}) }}
-            {{ form_widget(form.password, {'attr': {'class': 'form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-500'}}) }}
+            {{ form_widget(form.password, {'attr': {'class': 'form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
             {{ form_errors(form.password, {'attr': {'class': 'text-red-600 text-sm mt-1'}}) }}
         </div>
 
         <div class="mt-6">
-            <button type="submit" class="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition ease-in-out">
+            <button type="submit" class="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition ease-in-out duration-150">
                 Submit
             </button>
         </div>
 
         {{ form_end(form) }}
     </div>
+
+    {% block footer %}
+    <footer class="bg-gray-800 text-white py-6 mt-10">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center">
+                <div class="text-sm">
+                    &copy; 2024 Your Company. All rights reserved.
+                </div>
+                <div class="space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Contact Us</a>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <span class="text-gray-400">Follow us on:</span>
+                <a href="#" class="ml-2 text-gray-400 hover:text-white"><i class="fab fa-facebook"></i> Facebook</a>
+                <a href="#" class="ml-2 text-gray-400 hover:text-white"><i class="fab fa-twitter"></i> Twitter</a>
+                <a href="#" class="ml-2 text-gray-400 hover:text-white"><i class="fab fa-instagram"></i> Instagram</a>
+            </div>
+        </div>
+    </footer>
 {% endblock %}
+</body>
+</html>

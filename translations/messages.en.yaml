@@ -1,0 +1,24 @@
+# translations/messages.en.yaml
+welcome_message: 'Welcome to the dashboard!'
+symfony:
+    is:
+        # id is symfony.is.great
+        great: Symfony is great
+        # id is symfony.is.amazing
+        amazing: Symfony is amazing
+    has:
+        # id is symfony.has.bundles
+        bundles: Symfony has bundles
+user:
+    # id is user.login
+    login: Login
+
+home:
+    title: "Welcome to the English Homepage"
+    content: |
+        <div class="english-homepage">
+            <h1>Welcome!</h1>
+            <p>This is the English version of the homepage. Enjoy your stay!</p>
+        </div>
+    logged_in_as: "Logged in as: %email%"
+

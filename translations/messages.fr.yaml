@@ -1,0 +1,16 @@
+symfony:
+    is:
+        great: Symfony est génial
+        amazing: Symfony est incroyable
+    has:
+        bundles: Symfony a des bundles
+user:
+    login: Connexion
+home:
+    title: "Bienvenue sur la page d'accueil française"
+    content: |
+        <div class="french-homepage">
+            <h1>Bienvenue !</h1>
+            <p>Ceci est la version française de la page d'accueil. Bonne visite !</p>
+        </div>
+    logged_in_as: "Connecté en tant que : %email%"

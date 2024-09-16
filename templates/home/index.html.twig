@@ -1,33 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home Page{% endblock %}
+{% block title %}{{ 'home.title'|trans }}{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
+
+    {% if app.request.locale == 'fr' %}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IM+Fell+French+Canon:ital@0;1&display=swap" rel="stylesheet">
+    {% endif %}
+
+    {% if app.request.locale == 'en' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&family=IM+Fell+French+Canon:ital@0;1&display=swap" rel="stylesheet">
+    {% endif %}
+
+    
 {% endblock %}
 
 {% block body %}
 
-     <div class="container">
-        <!-- Top left content -->
-        <div class="top-left">
-            <h1>{{ title }}</h1>
-        </div>
-
-        <!-- Top right content -->
-        <div class="top-right">
-            Logged in as: {{ app.user.email }}
-        </div>
-
-        <!-- Centered paragraph -->
-        <div class="centered">
-            <p>Welcome to the Test Symfony application home page!</p>
-        </div>
+<div class="container">
+    <!-- Top left content -->
+    <div class="top-left">
+        <h1>{{ 'home.title'|trans }}</h1>
     </div>
 
+    <!-- Top right content -->
+    <div class="top-right">
+        {{ 'home.logged_in_as'|trans({'%email%': app.user.email}) }}
+    </div>
 
-    {# import 'macros.html.twig' as macros #}
+    <div class="centered">
+        {% if app.request.locale == 'fr' %}
+            <div style="font-family: 'IM Fell French Canon', serif;">
+                <p><em>{{ 'home.content'|trans|raw }}</em></p> {# Italicized for French version #}
+            </div>
+        {% else %}
+                <div style="font-family: 'Handjet', sans-serif;">
+                    {{ 'home.content'|trans|raw }}
+                </div>
+        {% endif %}
+    </div>
+</div>
+ 
+    {# <a href="{{ path('switch_locale', {'locale': 'en'}) }}">English</a> #}
+    {# <a href="{{ path('switch_locale', {'locale': 'fr'}) }}">Français</a> #}
 
+    
+
+   {# import 'macros.html.twig' as macros #}
 {# Display the form with the macro (FOR A DEMO REMOVE the comments) #}
     {#
     <form action="/submit" method="post">

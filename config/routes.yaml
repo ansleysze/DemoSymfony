@@ -62,3 +62,4 @@ home:
 test:
     path: /test
     controller: App\Controller\DefaultController::index
+
