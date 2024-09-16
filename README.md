@@ -13,6 +13,7 @@ I made this as a warm up for my work assignment, a mini side project if you will
 - **Custom login page styling** (CSS)
 - **Routing** to different pages (login, home, registration)
 - **Session and security management** using Symfony
+- ## Database management**: Using MariaDB
 
 
 
@@ -70,7 +71,14 @@ public function setName(string $name): self
 6.Check REPOSITORY LOCATION
  POPULATE AND ADD FUNCTIONS
 
-7. MIGRATE DATA BASEphp bin/console make:migration
+7. MIGRATE DATA BASE
+If you’ve made changes to your entity classes, such as adding new fields or modifying existing ones. Please update
+You first need to generate migration files based on the changes in your entity classes.
+
+Run the following command to update and create migrations
+php bin/console doctrine:migrations:diff
+
+To apply the migration and update the database schema, run:
 php bin/console doctrine:migrations:migrate
 
 8. implement controller actions
