@@ -4,16 +4,30 @@
 "Demo Symfony Project - A sample Symfony web application demonstrating user authentication, CRUD operations, custom login styling, basic routing, registration, with he addition of tailwind and metronic"
 
 I made this as a warm up for my work assignment, a mini side project if you will.
+Available Addresses:
+/ (home)
+/login
+/register
+/test
+/test2
+/add    (crud)
+/view   (crud)
+/switch-locale/en
+/switch-locale/fr
+/api/products   (View)(GET)
+/api/products/  (add)(POST)
 
 
 ## Features
 
 - **User authentication** (login, logout)
 - **CRUD operations**: Create, Read, Update, and Delete functionality for managing data entities. (Products)
-- **Custom login page styling** (CSS)
+- **Custom pages styling** (CSS and Tailwind)
 - **Routing** to different pages (login, home, registration)
 - **Session and security management** using Symfony
-- ## Database management**: Using MariaDB
+- **Database management**: Using MariaDB
+- **Templating using Macros** : To increase time and speed
+- **Firewall Management** : help prevent unknown users
 
 
 
