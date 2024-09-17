@@ -44,6 +44,15 @@ product_api_search_by_price:
    controller: 'App\Controller\ProductController::findByPrice'
    methods: ['GET']
 
+product_add:
+    path: /add
+    controller: App\Controller\ProductController::add
+
+product_view:
+    path: /view
+    controller: App\Controller\ProductController::view
+
+
 
 product_api_search_by_description:
    path: /api/products/search/description/{description}

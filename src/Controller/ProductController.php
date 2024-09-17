@@ -12,6 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+
 
 /**
 * @Route("/api/products", name="product_api")
@@ -60,6 +64,54 @@ class ProductController extends AbstractController
 
        return new JsonResponse(['message' => 'Product created!', 'product' => json_decode($data)], 201);
    }
+
+
+    /**
+     * @Route("/add", name="product_add", methods={"GET", "POST"})
+     */
+    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        // Create a new empty Product entity
+        $product = new Product();
+
+        // Build the form using Symfony's form builder
+        $form = $this->createFormBuilder($product)
+            ->add('name', TextType::class, ['label' => 'Product Name'])
+            ->add('description', TextType::class, ['label' => 'Product Description'])
+            ->add('price', NumberType::class, ['label' => 'Product Price'])
+            ->add('submit', SubmitType::class, ['label' => 'Create Product'])
+            ->getForm();
+
+    
+        $form->handleRequest($request);
+
+        // If form is submitted and valid, persist the new product
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($product);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('product_add');  // Redirect or adjust this as needed
+    }
+
+    // Render the form
+    return $this->render('product/index.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+
+     /**
+     * @Route("/view", name="product_view", methods={"GET"})
+     */
+    public function view(ProductRepository $productRepository): Response
+    {
+   
+        $products = $productRepository->findAll();
+
+        return $this->render('product/view.html.twig', [
+            'products' => $products,
+        ]);
+    }
 
 
    /**
@@ -158,4 +210,6 @@ class ProductController extends AbstractController
 
        return new Response($data, 200, ['Content-Type' => 'application/json']);
    }
+
+
 }
