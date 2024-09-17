@@ -5,17 +5,17 @@
 
 I made this as a warm up for my work assignment, a mini side project if you will.
 Available Addresses:
-/ (home)
-/login
-/register
-/test
-/test2
-/add    (crud)
-/view   (crud)
-/switch-locale/en
-/switch-locale/fr
-/api/products   (View)(GET)
-/api/products/  (add)(POST)
+/ (home) <br />
+/login   <br />
+/register <br />
+/test     <br />
+/test2   <br />
+/add    (crud)  <br />
+/view   (crud)  <br />
+/switch-locale/en  <br />
+/switch-locale/fr   <br />
+/api/products   (View)(GET)  <br />
+/api/products/  (add)(POST)   <br />
 
 
 ## Features
