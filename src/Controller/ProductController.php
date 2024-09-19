@@ -103,11 +103,18 @@ class ProductController extends AbstractController
      /**
      * @Route("/view", name="product_view", methods={"GET"})
      */
-    public function view(ProductRepository $productRepository): Response
+    public function view(Request $request, ProductRepository $productRepository): Response
     {
-   
-        $products = $productRepository->findAll();
-
+        $price = $request->query->get('price');
+    
+        if ($price) {
+            // If price is provided, filter products by price
+            $products = $productRepository->findByPriceLessThanOrEqual(['price' => $price]);
+        } else {
+            // Otherwise, get all products
+            $products = $productRepository->findAll();
+        }
+    
         return $this->render('product/view.html.twig', [
             'products' => $products,
         ]);

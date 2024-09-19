@@ -73,4 +73,20 @@ class Product
 
        return $this;
    }
+
+   
+    #[ORM\Column(length: 255, nullable: true)] 
+    private $image;
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
 }

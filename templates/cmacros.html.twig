@@ -25,13 +25,14 @@
         </div>
 
         <div class="flex justify-between items-center">
-            <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
-                Create Product
-              </button>
+            {{ form_widget(form.submit, { 'attr': {'class': 'bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'} }) }}
+
             <a href="/view" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
                 Check Products
             </a>
         </div>
+
+        {{ form_end(form) }}
 
     </div>
 {% endmacro %}

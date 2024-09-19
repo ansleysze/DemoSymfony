@@ -32,4 +32,13 @@ class ProductRepository extends ServiceEntityRepository
            ->getQuery()
            ->getResult();
    }
+
+   public function findByPriceLessThanOrEqual($price)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.price <= :price')
+            ->setParameter('price', $price)
+            ->getQuery()
+            ->getResult();
+    }
 }
