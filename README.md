@@ -28,6 +28,7 @@ Available Addresses:
 - **Database management**: Using MariaDB
 - **Templating using Macros** : To increase time and speed
 - **Firewall Management** : help prevent unknown users
+- **Filtering Products**: added filtering for CRUD
 
 
 
