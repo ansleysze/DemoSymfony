@@ -13,7 +13,7 @@ Encore
     .setPublicPath('/build')
     // only needed for CDN's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
-    .enablePostCssLoader()
+
     /*
      * ENTRY CONFIG
      *
@@ -53,16 +53,11 @@ Encore
         config.corejs = '3.23';
     })
 
-    
-
-
-    .enablePostCssLoader()
-
-    // allows legacy applications to use $/jQuery as a global variable
-    .autoProvidejQuery()
+    // enables Sass/SCSS support
+    //.enableSassLoader()
 
     // uncomment if you use TypeScript
-    //.enableTypeScriptLoader()
+    .enableTypeScriptLoader()
 
     // uncomment if you use React
     //.enableReactPreset()
@@ -73,6 +68,9 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
+    //
+
+    .enablePostCssLoader()
 ;
 
 module.exports = Encore.getWebpackConfig();

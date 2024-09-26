@@ -72,3 +72,8 @@ test:
     path: /test
     controller: App\Controller\DefaultController::index
 
+metronic_form:
+    path: /metronic-form
+    controller: App\Controller\EntityGeneratorController::generateentity
+
+
