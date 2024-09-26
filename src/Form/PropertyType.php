@@ -44,6 +44,11 @@ class PropertyType extends AbstractType
             ->add('propertyNullable', CheckboxType::class, [
                 'label' => 'Nullable',
                 'required' => false,
+            ])
+            ->add('stringLength', TextType::class, [
+                'label' => 'String Length',
+                'required' => false,
+                'attr' => ['class' => 'string-length-field', 'style' => 'display:none;'],
             ]);
     }
 }

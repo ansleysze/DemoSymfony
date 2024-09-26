@@ -27,7 +27,9 @@ class EntityGeneratorType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Generate Entity',
             ]);
-    }
+
+
+        }
 
     public function configureOptions(OptionsResolver $resolver)
     {

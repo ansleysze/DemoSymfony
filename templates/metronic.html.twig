@@ -12,12 +12,18 @@
             {{ form_errors(form.entityName) }}
         </div>
 
+        <h2>Properties</h2>
         <div id="property-collection">
             {% for propertyForm in form.properties %}
                 <div class="property-item">
                     {{ form_row(propertyForm.propertyName) }}
                     {{ form_row(propertyForm.propertyType) }}
                     {{ form_row(propertyForm.propertyNullable) }}
+
+                    <label class="string-length-label" style="display:none;">
+                        String Length
+                        <input type="number" name="entity_generator[properties][{{ loop.index0 }}][stringLength]" class="form-control string-length-field" />
+                    </label>
 
                     <button type="button" class="remove-property">
                         Remove Property
@@ -39,71 +45,142 @@
         {% if jsonData is not empty %}
             <div>
                 <h2>Submitted Data</h2>
-                <pre>{{ jsonData|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+                <pre id="submitted-data">{{ jsonData|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+
+                <button id="clear-submitted-data" class="btn btn-warning">
+                    Clear Submitted Data
+                </button>
             </div>
         {% endif %}
     </div>
 
     <script>
-        // Add event listener for adding new property
-        document.getElementById('add-property').addEventListener('click', function() {
-            const collectionHolder = document.getElementById('property-collection');
-            const propertyCount = collectionHolder.children.length;
+    // Function to show string length input if "String" is selected
+    function toggleStringLengthField(propertyItem) {
+        const selectElement = propertyItem.querySelector('select[name*="[propertyType]"]');
+        const stringLengthLabel = propertyItem.querySelector('.string-length-label');
 
-            // Create a new property item
-            const newPropertyItem = document.createElement('div');
-            newPropertyItem.className = 'property-item';
-            newPropertyItem.dataset.index = propertyCount;
-
-            // HTML structure for the new property fields
-            newPropertyItem.innerHTML = `
-                <label>Property Name</label>
-                <input type="text" name="entity_generator[properties][${propertyCount}][propertyName]" />
-
-                <label>Property Type</label>
-                <select name="entity_generator[properties][${propertyCount}][propertyType]">
-                    <option value="text">Text</option>
-                    <option value="string">String</option>
-                    <option value="integer">Integer</option>
-                    <option value="boolean">Boolean</option>
-                    <option value="smallint">SmallInteger</option>
-                    <option value="bigint">BigInteger</option>
-                    <option value="float">Float</option>
-                    <option value="array">Array</option>
-                    <option value="simple_array">Simple Array</option>
-                    <option value="object">Object</option>
-                    <option value="binary">Binary</option>
-                    <option value="blob">Blob</option>
-                    <option value="datetime">Date & Time</option>
-                    <option value="datetime_immutable">Date & Time Immutable</option>
-                    <option value="datetimetz">Date & Time TimeZone</option>
-                    <option value="datetimetz_immutable">Date & Time TimeZone Immutable</option>
-                    <option value="date">Date</option>
-                    <option value="date_immutable">Date Immutable</option>
-                </select>
-
-                <label>
-                    <input type="checkbox" name="entity_generator[properties][${propertyCount}][propertyNullable]" />
-                    Nullable
-                </label>
-
-                <button type="button" class="remove-property">Remove Property</button>
-            `;
-
-            // Append the new property item to the collection
-            collectionHolder.appendChild(newPropertyItem);
-
-            // Attach remove event listener for the new property
-            newPropertyItem.querySelector('.remove-property').addEventListener('click', function() {
-                newPropertyItem.remove();
-            });
+        selectElement.addEventListener('change', function () {
+            if (selectElement.value === 'string') {
+                stringLengthLabel.style.display = 'block';
+            } else {
+                stringLengthLabel.style.display = 'none';
+            }
         });
 
-        // Attach remove event listeners for all existing property items
-        document.querySelectorAll('.remove-property').forEach(function(button) {
-            button.addEventListener('click', function() {
-                button.closest('.property-item').remove();
-            });
+        // Trigger this check when the property is first added
+        if (selectElement.value === 'string') {
+            stringLengthLabel.style.display = 'block';
+        } else {
+            stringLengthLabel.style.display = 'none';
+        }
+    }
+
+    // Add event listener for adding new property
+    document.getElementById('add-property').addEventListener('click', function() {
+        const collectionHolder = document.getElementById('property-collection');
+        const propertyCount = collectionHolder.children.length;
+
+        // Create a new property item
+        const newPropertyItem = document.createElement('div');
+        newPropertyItem.className = 'property-item';
+        newPropertyItem.dataset.index = propertyCount;
+
+        // HTML structure for the new property fields, including string length input
+        newPropertyItem.innerHTML = `
+            <label>Property Name</label>
+            <input type="text" name="entity_generator[properties][${propertyCount}][propertyName]" required />
+
+            <label>Property Type</label>
+            <select name="entity_generator[properties][${propertyCount}][propertyType]">
+                <option value="text">Text</option>
+                <option value="string">String</option>
+                <option value="integer">Integer</option>
+                <option value="boolean">Boolean</option>
+                <option value="smallint">SmallInteger</option>
+                <option value="bigint">BigInteger</option>
+                <option value="float">Float</option>
+                <option value="array">Array</option>
+                <option value="simple_array">Simple Array</option>
+                <option value="object">Object</option>
+                <option value="binary">Binary</option>
+                <option value="blob">Blob</option>
+                <option value="datetime">Date & Time</option>
+                <option value="datetime_immutable">Date & Time Immutable</option>
+                <option value="datetimetz">Date & Time TimeZone</option>
+                <option value="datetimetz_immutable">Date & Time TimeZone Immutable</option>
+                <option value="date">Date</option>
+                <option value="date_immutable">Date Immutable</option>
+            </select>
+
+            <label class="string-length-label" style="display:none;">
+                String Length
+                <input type="number" name="entity_generator[properties][${propertyCount}][stringLength]" class="form-control string-length-field" />
+            </label>
+
+            <label>
+                <input type="checkbox" name="entity_generator[properties][${propertyCount}][propertyNullable]" />
+                Nullable
+            </label>
+
+            <button type="button" class="remove-property">Remove Property</button>
+        `;
+
+        // Append the new property item to the collection
+        collectionHolder.appendChild(newPropertyItem);
+
+        // Attach event listener to toggle the String Length field if String is selected
+        toggleStringLengthField(newPropertyItem);
+
+        // Attach remove event listener for the new property
+        newPropertyItem.querySelector('.remove-property').addEventListener('click', function() {
+            newPropertyItem.remove();
         });
-    </script>
+    });
+
+    // Attach remove event listeners for all existing property items
+    document.querySelectorAll('.remove-property').forEach(function(button) {
+        button.addEventListener('click', function() {
+            button.closest('.property-item').remove();
+        });
+    });
+
+    // Attach the string length toggle functionality to existing items
+    document.querySelectorAll('.property-item').forEach(function(propertyItem) {
+        toggleStringLengthField(propertyItem);
+    });
+
+    // Reset form fields and properties on page reload
+    window.addEventListener('load', function () {
+        const propertyCollection = document.getElementById('property-collection');
+        propertyCollection.innerHTML = ''; // Clear all properties
+
+        // Reset form inputs
+        document.getElementById('entity-form').reset();
+    });
+
+    // Clear submitted data on button click
+    document.getElementById('clear-submitted-data')?.addEventListener('click', function() {
+        document.getElementById('submitted-data').innerHTML = '';
+        this.style.display = 'none'; // Hide the clear button after clearing
+    });
+
+    // Debugging: Log submitted property values on form submission
+    document.getElementById('entity-form').addEventListener('submit', function(event) {
+        const properties = document.querySelectorAll('.property-item');
+        properties.forEach(function(property) {
+            const propertyNameField = property.querySelector('input[name*="[propertyName]"]');
+            const propertyTypeField = property.querySelector('select[name*="[propertyType]"]');
+            const stringLengthField = property.querySelector('input[name*="[stringLength]"]');
+            const isNullableField = property.querySelector('input[name*="[propertyNullable]"]');
+
+            console.log('Submitted Property:');
+            console.log('Property Name:', propertyNameField ? propertyNameField.value : null);
+            console.log('Property Type:', propertyTypeField ? propertyTypeField.value : null);
+            console.log('Is Nullable:', isNullableField ? isNullableField.checked : null);
+            console.log('String Length:', stringLengthField ? stringLengthField.value : null);
+        });
+    });
+</script>
+
 {% endblock %}
