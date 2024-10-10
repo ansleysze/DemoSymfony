@@ -9,26 +9,22 @@ use App\Form\EntityGeneratorType;
 
 class EntityGeneratorController extends AbstractController
 {
-    /**
-     * @Route("/generate", name="generate_entity")
-     */
     public function generateEntity(Request $request)
     {
         $form = $this->createForm(EntityGeneratorType::class);
         $form->handleRequest($request);
         
-        $jsonData = []; // Initialize jsonData
+        $jsonData = []; 
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             
-            // Initialize properties array
+            dump($data);
+            
             $properties = [];
             
-            // Check if properties were submitted
             if (isset($data['properties'])) {
                 foreach ($data['properties'] as $property) {
-                    // Skip empty properties to avoid null values in the array
                     if (!empty($property['propertyName'])) {
                         // Initialize the property data array
                         $propertyData = [
@@ -37,24 +33,37 @@ class EntityGeneratorController extends AbstractController
                             'isNullable' => !empty($property['propertyNullable']) ? 'true' : 'false',
                         ];
                         
-                        // Check for string type and add stringLength if provided
                         if ($property['propertyType'] === 'string') {
                             $propertyData['value'] = !empty($property['stringLength']) ? $property['stringLength'] : null;
                         }
+
+                        if ($property['propertyType'] === 'association') {
+                            $propertyData['associationType'] = $property['associationTypes'];  // OneToMany, ManyToOne, etc.
+                            
+                            $propertyData['associationDirection'] = $property['Direction'];
+
+                            if (!empty($property['associatedEntity'])) {
+                                $propertyData['associatedEntity'] = $property['associatedEntity'];
+                            }
+                            if (!empty($property['associatedProperty'])) {
+                                $propertyData['associatedProperty'] = $property['associatedProperty'];
+                            }
+                        }
         
-                        // Add the populated propertyData to properties array
                         $properties[] = $propertyData;
                     }
                 }
+                
             }
             
-            // Prepare jsonData with entityName and properties
+            
             $jsonData = [
                 'entityName' => $data['entityName'],
                 'properties' => $properties,
             ];
+
+           // $result = $entityGeneratorService->generateEntityFile($data['entityName'], $jsonData['properties']);
         }
-        
         
 
         // Pass jsonData to the template
@@ -64,4 +73,3 @@ class EntityGeneratorController extends AbstractController
         ]);
     }
 }
-

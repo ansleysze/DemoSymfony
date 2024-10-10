@@ -1,186 +1,271 @@
 {% extends "base.html.twig" %}
 
-{% block body %}
-    <div class="container">
-        <h1>Create a Doctrine Entity</h1>
+{% block stylesheet %}
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #87CEEB;
+        }
+    </style>
+{% endblock %}
 
-        {{ form_start(form, {'attr': {'id': 'entity-form'}}) }}
+{% block content %}
+    <div class="container mx-auto p-4 bg-gray-300">
+        <h1 class="text-3xl font-bold text-center mb-6">Create a Doctrine Entity</h1>
+
+        {{ form_start(form, {'attr': {'class': 'space-y-4', 'id': 'entity-form'}}) }}
 
         <div class="form-group">
-            {{ form_label(form.entityName) }}
-            {{ form_widget(form.entityName) }}
+            {{ form_label(form.entityName, null, {'attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+            {{ form_widget(form.entityName, {'attr': {'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
             {{ form_errors(form.entityName) }}
         </div>
 
-        <h2>Properties</h2>
-        <div id="property-collection">
+        <h2 class="text-lg font-semibold">Properties</h2>
+        <div id="property-collection" class="overflow-y-auto max-h-screen">
             {% for propertyForm in form.properties %}
-                <div class="property-item">
-                    {{ form_row(propertyForm.propertyName) }}
-                    {{ form_row(propertyForm.propertyType) }}
-                    {{ form_row(propertyForm.propertyNullable) }}
+                <div class="property-item mb-4 p-4 border border-gray-300 rounded-md">
+                    {{ form_row(propertyForm.propertyName, {'attr': {'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
+                    {{ form_row(propertyForm.propertyType, {'attr': {'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
+                    {{ form_row(propertyForm.associationTypes, {'attr': {'class': 'association-field', 'style': 'display:none;'}})}}
+                    {{ form_row(propertyForm.Direction, {'attr': {'class': 'direction-field', 'style': 'display:none;'}})}}
+                    {{ form_row(propertyForm.associatedEntity, {'attr': {'class': 'entity-relation-field', 'style': 'display:none;'}})}}
+                    {{ form_row(propertyForm.associatedProperty             , {'attr': {'class': 'entity-property-field', 'style': 'display:none;'}})}}
+                    
+                    {{ form_row(propertyForm.propertyNullable, {'attr': {'class': 'form-checkbox'}}) }}
+
+                    
+                    
+                    <button type="button" class="remove-property mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Remove Property
+                    </button>
 
                     <label class="string-length-label" style="display:none;">
                         String Length
                         <input type="number" name="entity_generator[properties][{{ loop.index0 }}][stringLength]" class="form-control string-length-field" />
                     </label>
-
-                    <button type="button" class="remove-property">
-                        Remove Property
-                    </button>
                 </div>
             {% endfor %}
         </div>
 
-        <button type="button" id="add-property">
+        <button type="button" id="add-property" class="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
             Add Property
         </button>
 
         <div class="form-group">
-            {{ form_widget(form.submit) }}
+            {{ form_widget(form.submit, {'attr': {'class': 'mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'}}) }}
         </div>
 
         {{ form_end(form) }}
 
         {% if jsonData is not empty %}
-            <div>
-                <h2>Submitted Data</h2>
-                <pre id="submitted-data">{{ jsonData|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
-
-                <button id="clear-submitted-data" class="btn btn-warning">
-                    Clear Submitted Data
+            <div class="mt-4">
+                <h2 class="text-lg font-semibold">Submitted Data</h2>
+                <!-- Toggle Button -->
+                <button id="toggle-json-btn" class="mb-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Show/Hide JSON Data
                 </button>
+
+                <!-- JSON Data Container -->
+                <div id="json-data-container" style="display: none;" class="bg-white p-4 rounded-md border border-gray-300">
+                    <pre>{{ jsonData|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+                </div>
             </div>
         {% endif %}
     </div>
 
-    <script>
-    // Function to show string length input if "String" is selected
-    function toggleStringLengthField(propertyItem) {
-        const selectElement = propertyItem.querySelector('select[name*="[propertyType]"]');
-        const stringLengthLabel = propertyItem.querySelector('.string-length-label');
 
-        selectElement.addEventListener('change', function () {
-            if (selectElement.value === 'string') {
-                stringLengthLabel.style.display = 'block';
+
+    <script>
+        
+        document.getElementById('add-property').addEventListener('click', function() {
+            const collectionHolder = document.getElementById('property-collection');
+            const propertyCount = collectionHolder.children.length;
+
+           
+            const newPropertyItem = document.createElement('div');
+            newPropertyItem.className = 'property-item mb-4 p-4 border border-gray-300 rounded-md';
+            newPropertyItem.dataset.index = propertyCount;
+
+            newPropertyItem.innerHTML = `
+                <label class="block text-sm font-medium text-gray-700">Property Name</label>
+                <input type="text" name="entity_generator[properties][${propertyCount}][propertyName]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+
+                <label class="block text-sm font-medium text-gray-700">Property Type</label>
+                <select name="entity_generator[properties][${propertyCount}][propertyType]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option value="text">Text</option>
+                    <option value="string">String</option>
+                    <option value="integer">Integer</option>
+                    <option value="boolean">Boolean</option>
+                    <option value="smallint">SmallInteger</option>
+                    <option value="bigint">BigInteger</option>
+                    <option value="float">Float</option>
+                    <option value="array">Array</option>
+                    <option value="simple_array">Simple Array</option>
+                    <option value="object">Object</option>
+                    <option value="binary">Binary</option>
+                    <option value="blob">Blob</option>
+                    <option value="datetime">Date & Time</option>
+                    <option value="datetime_immutable">Date & Time Immutable</option>
+                    <option value="datetimetz">Date & Time TimeZone</option>
+                    <option value="datetimetz_immutable">Date & Time TimeZone Immutable</option>
+                    <option value="date">Date</option>
+                    <option value="date_immutable">Date Immutable</option>
+                    <option value="association">Association</option>
+
+
+                    
+                </select>
+
+                <label class="block text-sm font-medium text-gray-700 association-field" style="display:none;">Association Type</label>
+                <select name="entity_generator[properties][${propertyCount}][associationTypes]" class="association-field mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" style="display:none;">
+                    <option value="OneToOne">One to One</option>
+                    <option value="OneToMany">One to Many</option>
+                    <option value="ManyToOne">Many to One</option>
+                    <option value="ManyToMany">Many to Many</option>
+                </select>
+
+                 <label class="block text-sm font-medium text-gray-700 association-field" style="display:none;">Association Direction</label>
+                <select name="entity_generator[properties][${propertyCount}][Direction]" class="association-field mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" style="display:none;">
+                    <option value="unidirectional">UniDirectional</option>
+                    <option value="bidirectional">BiDirectional</option>
+                    <option value="selfreferencing">Self-referencing</option>
+                </select>
+
+                 <label class="block text-sm font-medium text-gray-700 entity-relation-label" style="display:none;">Entity Relation</label>
+                 <input type="text" name="entity_generator[properties][${propertyCount}][associatedEntity]" class="entity-relation-field mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" style="display:none;" />
+
+                 <label class="block text-sm font-medium text-gray-700 entity-property-label" style="display:none;">Entity Property</label>
+                 <input type="text" name="entity_generator[properties][${propertyCount}][associatedProperty]" class="entity-property-field mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" style="display:none;" />
+
+
+                <label class="string-length-label" style="display:none;">
+                    String Length
+                    <input type="number" name="entity_generator[properties][${propertyCount}][stringLength]" class="form-control string-length-field" />
+                </label>
+
+                <label class="inline-flex items-center mt-2">
+                    <input type="checkbox" name="entity_generator[properties][${propertyCount}][propertyNullable]" class="form-checkbox" />
+                    <span class="ml-2">Nullable</span>
+                </label>
+
+                <button type="button" class="remove-property mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    Remove Property
+                </button>
+            `;
+
+          
+            collectionHolder.appendChild(newPropertyItem);
+
+            toggleStringLengthField(newPropertyItem);
+
+            newPropertyItem.querySelector('.remove-property').addEventListener('click', function() {
+                newPropertyItem.remove();
+            });
+        });
+
+      
+        document.querySelectorAll('.remove-property').forEach(function(button) {
+            button.addEventListener('click', function() {
+                button.closest('.property-item').remove();
+            });
+        });
+
+
+        document.getElementById('toggle-json-btn').addEventListener('click', function() {
+            const jsonDataContainer = document.getElementById('json-data-container');
+            if (jsonDataContainer.style.display === 'none') {
+                jsonDataContainer.style.display = 'block';
+                
             } else {
-                stringLengthLabel.style.display = 'none';
+                jsonDataContainer.style.display = 'none';
             }
         });
 
-        // Trigger this check when the property is first added
-        if (selectElement.value === 'string') {
-            stringLengthLabel.style.display = 'block';
+        
+    function toggleStringLengthField(propertyItem) {
+            const selectElement = propertyItem.querySelector('select[name*="[propertyType]"]');
+            const stringLengthLabel = propertyItem.querySelector('.string-length-label');
+            const associationFields = propertyItem.querySelectorAll('.association-field'); 
+            const directionField = propertyItem.querySelector('select[name*="[Direction]"]');
+            const associationTypeField = propertyItem.querySelector('select[name*="[associationTypes]"]');
+            const entityRelationField = propertyItem.querySelector('.entity-relation-field');
+            const entityRelationLabel = propertyItem.querySelector('.entity-relation-label');
+            const entityPropertyLabel = propertyItem.querySelector('.entity-property-label');
+            const entityPropertyField = propertyItem.querySelector('.entity-property-field');
+            
+
+  
+    directionField.value = '';
+
+    function toggleEntityRelationField() {
+        const isSelfReferencing = directionField.value === 'selfreferencing';
+        const isOneToOne = associationTypeField.value === 'OneToOne';
+
+        if (directionField && ( directionField.value === 'bidirectional')) {
+            entityRelationField.style.display = 'block';
+            entityRelationLabel.style.display = 'block';
+            entityPropertyLabel.style.display = 'block';
+            entityPropertyField.style.display = 'block';
+        }else if (isSelfReferencing && isOneToOne) {
+            entityRelationField.style.display = 'none';
+            entityRelationLabel.style.display = 'none';
+            entityPropertyLabel.style.display = 'none';
+            entityPropertyField.style.display = 'none';
+        }
+        else if (isSelfReferencing) {
+            entityRelationField.style.display = 'none';
+            entityRelationLabel.style.display = 'none';
+            entityPropertyLabel.style.display = 'block';
+            entityPropertyField.style.display = 'block';
+        } 
+        else if (directionField && ( directionField.value === 'unidirectional')) {
+            entityRelationField.style.display = 'block';
+            entityRelationLabel.style.display = 'block';
+            entityPropertyLabel.style.display = 'none';
+            entityPropertyField.style.display = 'none';
         } else {
-            stringLengthLabel.style.display = 'none';
+            entityRelationField.style.display = 'none';
+            entityRelationLabel.style.display = 'none';
+            entityPropertyLabel.style.display = 'none';
+            entityPropertyField.style.display = 'none';
         }
     }
 
-    // Add event listener for adding new property
-    document.getElementById('add-property').addEventListener('click', function() {
-        const collectionHolder = document.getElementById('property-collection');
-        const propertyCount = collectionHolder.children.length;
+    // Add change event listener for propertyType selection
+    selectElement.addEventListener('change', function () {
+        const isAssociation = selectElement.value === 'association';
 
-        // Create a new property item
-        const newPropertyItem = document.createElement('div');
-        newPropertyItem.className = 'property-item';
-        newPropertyItem.dataset.index = propertyCount;
+        if (selectElement.value === 'string') {
+            stringLengthLabel.style.display = 'block';
+            associationFields.forEach(field => field.style.display = 'none');
 
-        // HTML structure for the new property fields, including string length input
-        newPropertyItem.innerHTML = `
-            <label>Property Name</label>
-            <input type="text" name="entity_generator[properties][${propertyCount}][propertyName]" required />
+        } else if (isAssociation) {
+            stringLengthLabel.style.display = 'none';
+            associationFields.forEach(field => field.style.display = 'block');
+            
 
-            <label>Property Type</label>
-            <select name="entity_generator[properties][${propertyCount}][propertyType]">
-                <option value="text">Text</option>
-                <option value="string">String</option>
-                <option value="integer">Integer</option>
-                <option value="boolean">Boolean</option>
-                <option value="smallint">SmallInteger</option>
-                <option value="bigint">BigInteger</option>
-                <option value="float">Float</option>
-                <option value="array">Array</option>
-                <option value="simple_array">Simple Array</option>
-                <option value="object">Object</option>
-                <option value="binary">Binary</option>
-                <option value="blob">Blob</option>
-                <option value="datetime">Date & Time</option>
-                <option value="datetime_immutable">Date & Time Immutable</option>
-                <option value="datetimetz">Date & Time TimeZone</option>
-                <option value="datetimetz_immutable">Date & Time TimeZone Immutable</option>
-                <option value="date">Date</option>
-                <option value="date_immutable">Date Immutable</option>
-            </select>
+        } else {
+            stringLengthLabel.style.display = 'none';
+            associationFields.forEach(field => field.style.display = 'none');
 
-            <label class="string-length-label" style="display:none;">
-                String Length
-                <input type="number" name="entity_generator[properties][${propertyCount}][stringLength]" class="form-control string-length-field" />
-            </label>
+        }
+    });
 
-            <label>
-                <input type="checkbox" name="entity_generator[properties][${propertyCount}][propertyNullable]" />
-                Nullable
-            </label>
+    associationTypeField.addEventListener('change', toggleEntityRelationField);
+    directionField.addEventListener('change', toggleEntityRelationField);
+    selectElement.dispatchEvent(new Event('change'));
+    directionField.dispatchEvent(new Event('change'));
+    associationTypeField.dispatchEvent(new Event('change'));
 
-            <button type="button" class="remove-property">Remove Property</button>
-        `;
-
-        // Append the new property item to the collection
-        collectionHolder.appendChild(newPropertyItem);
-
-        // Attach event listener to toggle the String Length field if String is selected
-        toggleStringLengthField(newPropertyItem);
-
-        // Attach remove event listener for the new property
-        newPropertyItem.querySelector('.remove-property').addEventListener('click', function() {
-            newPropertyItem.remove();
+    
+}
+      
+        window.addEventListener('load', function() {
+            
+            document.getElementById('entity-form').reset();
+            
+            document.getElementById('property-collection').innerHTML = '';
         });
-    });
-
-    // Attach remove event listeners for all existing property items
-    document.querySelectorAll('.remove-property').forEach(function(button) {
-        button.addEventListener('click', function() {
-            button.closest('.property-item').remove();
-        });
-    });
-
-    // Attach the string length toggle functionality to existing items
-    document.querySelectorAll('.property-item').forEach(function(propertyItem) {
-        toggleStringLengthField(propertyItem);
-    });
-
-    // Reset form fields and properties on page reload
-    window.addEventListener('load', function () {
-        const propertyCollection = document.getElementById('property-collection');
-        propertyCollection.innerHTML = ''; // Clear all properties
-
-        // Reset form inputs
-        document.getElementById('entity-form').reset();
-    });
-
-    // Clear submitted data on button click
-    document.getElementById('clear-submitted-data')?.addEventListener('click', function() {
-        document.getElementById('submitted-data').innerHTML = '';
-        this.style.display = 'none'; // Hide the clear button after clearing
-    });
-
-    // Debugging: Log submitted property values on form submission
-    document.getElementById('entity-form').addEventListener('submit', function(event) {
-        const properties = document.querySelectorAll('.property-item');
-        properties.forEach(function(property) {
-            const propertyNameField = property.querySelector('input[name*="[propertyName]"]');
-            const propertyTypeField = property.querySelector('select[name*="[propertyType]"]');
-            const stringLengthField = property.querySelector('input[name*="[stringLength]"]');
-            const isNullableField = property.querySelector('input[name*="[propertyNullable]"]');
-
-            console.log('Submitted Property:');
-            console.log('Property Name:', propertyNameField ? propertyNameField.value : null);
-            console.log('Property Type:', propertyTypeField ? propertyTypeField.value : null);
-            console.log('Is Nullable:', isNullableField ? isNullableField.checked : null);
-            console.log('String Length:', stringLengthField ? stringLengthField.value : null);
-        });
-    });
-</script>
-
+    </script>
 {% endblock %}

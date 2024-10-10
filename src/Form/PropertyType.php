@@ -38,6 +38,7 @@ class PropertyType extends AbstractType
                     'Date & Time TimeZone Immutable' => 'datetimetz_immutable',
                     'Date' => 'date',
                     'Date Immutable' => 'date_immutable',
+                    'Association' => 'association',
                    
                 ],
             ])
@@ -49,6 +50,37 @@ class PropertyType extends AbstractType
                 'label' => 'String Length',
                 'required' => false,
                 'attr' => ['class' => 'string-length-field', 'style' => 'display:none;'],
+            ])
+            ->add('associationTypes', ChoiceType::class, [
+                'label' => 'Association Type',
+                'choices' => [
+                    'One to One' => 'OneToOne',
+                    'One to Many' => 'OneToMany',
+                    'Many to One' => 'ManyToOne',
+                    'Many to Many' => 'ManyToMany',
+                ],
+                'attr' => ['class' => 'association-field', 'style' => 'display:none;'],
+                'required' => false,
+            ])
+            ->add('Direction', ChoiceType::class, [
+                'label' => 'Direction',
+                'choices' => [
+                    'Uni-directional' => 'unidirectional',
+                    'Bi-directional' => 'bidirectional',
+                    'Self-referencing' => 'selfreferencing',
+                ],
+                'attr' => ['class' => 'direction-field', 'style' => 'display:none;'], 
+                'required' => false,
+            ])
+            ->add('associatedEntity', TextType::class, [
+                'label' => 'associatedEntity',
+                'attr' => ['class' => 'entity-relation-field', 'style' => 'display:none;'],
+                'required' => false,
+            ])
+            ->add('associatedProperty', TextType::class, [
+                'label' => 'associatedProperty',
+                'attr' => ['class' => 'entity-property-field', 'style' => 'display:none;'],
+                'required' => false,
             ]);
     }
 }

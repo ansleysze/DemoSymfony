@@ -5,17 +5,17 @@
         {{ encore_entry_link_tags('app') }}
         <link  href="{{ asset('css/style.css') }}" rel="stylesheet"/>
 
-        <link rel="stylesheet" href="{{ asset('metronic/dist/css/style.bundle.css') }}">
-        <script src="{{ asset('metronic/dist/js/scripts.bundle.js') }}"></script>
+        <link rel="stylesheet" href="{{ asset('metronic/css/style.css') }}">
+        <script src="{{ asset('app.js') }}"></script>
     {% endblock %}
     </head>
     <body>
         <div class="container mx-auto p-4">
-            {% block body %}{% endblock %}
+            {% block content %}{% endblock %}
         </div>
         {% block javascripts %}
-            {# {{ encore_entry_script_tags('app') }} #}
-            <script src="{{ asset('js/script.js') }}"></script>
+            { {{ encore_entry_script_tags('app') }} }
+            
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </body>
