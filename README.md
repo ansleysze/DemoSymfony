@@ -1,7 +1,9 @@
 
 # DemoSynfomy
 
-"Demo Symfony Project - A sample Symfony web application demonstrating user authentication, CRUD operations, custom login styling, basic routing, registration, with he addition of tailwind and metronic"
+"Demo Symfony Project - A sample Symfony web application demonstrating user authentication, CRUD operations, custom login styling, basic routing, registration, with he addition of tailwind and metronic" 
+
+Update: I have made a form that compiles the JSON Data for a Symfony Entity and its properties such as text, associations, booleans. Feel free to check it out at /metronic-form  upon loading the website
 
 I made this as a warm up for my work assignment, a mini side project if you will.
 Available Addresses:
@@ -16,7 +18,7 @@ Available Addresses:
 /switch-locale/fr   <br />
 /api/products   (View)(GET)  <br />
 /api/products/  (add)(POST)   <br />
-
+/metronic-form
 
 ## Features
 
